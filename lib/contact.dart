@@ -164,6 +164,7 @@ class Contact {
       this.jobTitle,
       List<String>? linkedContactIds,
       List<Item>? emails,
+      List<Item>? tags,
       List<Item>? phones,
       List<PostalAddress>? postalAddresses,
       List<Item>? socialProfiles,
@@ -173,6 +174,7 @@ class Contact {
       this.lastModified,
       this.note})
       : _emails = [...?emails],
+        _tags = [...?tags],
         _phones = [...?phones],
         _socialProfiles = [...?socialProfiles],
         _urls = [...?urls],
@@ -195,6 +197,7 @@ class Contact {
 
   final List<String> _linkedContactIds;
   final List<Item> _emails;
+  final List<Item> _tags;
   final List<Item> _phones;
   final List<Item> _socialProfiles;
   final List<ContactDate> _dates;
@@ -223,6 +226,13 @@ class Contact {
   set emails(List<Item>? value) {
     _emails.clear();
     emails.addAll([...?value]);
+  }
+
+  List<Item> get tags => _tags;
+
+  set tags(List<Item>? value) {
+    _tags.clear();
+    tags.addAll([...?value]);
   }
 
   List<Item> get phones => _phones;
@@ -304,6 +314,8 @@ class Contact {
       ],
       emails: [for (final m in _iterableKey(dyn, _kemails)) Item.fromMap(m)]
           .notNull(),
+      tags: [for (final m in _iterableKey(dyn, _ktags)) Item.fromMap(m)]
+          .notNull(),
       phones: [for (final m in _iterableKey(dyn, _kphones)) Item.fromMap(m)]
           .notNull(),
       socialProfiles: [
@@ -344,6 +356,7 @@ class Contact {
       linkedContactIds: this.linkedContactIds + other.linkedContactIds,
       note: this.note ?? other.note,
       emails: {...this.emails, ...other.emails}.toList(),
+      tags: {...this.tags, ...other.tags}.toList(),
       socialProfiles:
           {...this.socialProfiles, ...other.socialProfiles}.toList(),
       dates: {...this.dates, ...other.dates}.toList(),
@@ -379,6 +392,7 @@ class Contact {
             .equals(this.socialProfiles, other.socialProfiles) &&
         DeepCollectionEquality.unordered().equals(this.urls, other.urls) &&
         DeepCollectionEquality.unordered().equals(this.dates, other.dates) &&
+        DeepCollectionEquality.unordered().equals(this.tags, other.tags) &&
         DeepCollectionEquality.unordered().equals(this.emails, other.emails) &&
         DeepCollectionEquality.unordered()
             .equals(this.postalAddresses, other.postalAddresses);
@@ -583,6 +597,7 @@ Map<String, dynamic> _contactToMap(Contact contact) {
     _kcompany: contact.company,
     _kjobTitle: contact.jobTitle,
     _kemails: contact.emails.toJson(),
+    _ktags: contact.tags.toJson(),
     _kphones: contact.phones.toJson(),
     _kdates: [
       for (final item in contact.dates) _contactDateToMap(item),
@@ -670,6 +685,7 @@ const _ksingleContactId = "singleContactId";
 const _kotherKeys = "otherKeys";
 const _kjobTitle = "jobTitle";
 const _kemails = "emails";
+const _ktags = "tags";
 const _klinkedContactIds = "linkedContactIds";
 const _kphones = "phones";
 const _kpostalAddresses = "postalAddresses";
